@@ -1,13 +1,35 @@
-# Example resource that outputs the input value and 
-# echoes it's base64 encoded version locally 
+module "azure_container_group" {
+  source  = "getindata/container-group/azurerm"
+  version = "1.0.0"
 
-resource "null_resource" "output_input" {
-  triggers = {
-    name  = local.name_from_descriptor
-    input = var.example_var
+  context = module.this.context
+
+  resource_group_name = var.resource_group_name
+  location            = var.location
+
+  name = coalesce(var.name, "atlantis")
+
+  containers = {
+    atlantis = {
+      image  = var.image
+      cpu    = var.cpu
+      memory = var.memory
+      ports = [
+        {
+          port = var.port
+        }
+      ]
+      commands                     = ["atlantis", "server"]
+      environment_variables        = local.atlantis_environment_variables
+      secure_environment_variables = local.atlantis_secure_environment_variables
+    }
   }
 
-  provisioner "local-exec" {
-    command = "echo ${var.example_var} | base64"
-  }
+  subnet_ids                          = var.subnet_ids
+  dns_name_label                      = var.dns_name_label
+  dns_name_servers                    = var.dns_name_servers
+  identity                            = var.identity
+  image_registry_credential           = var.image_registry_credential
+  container_diagnostics_log_analytics = var.container_diagnostics_log_analytics
+  container_group_diagnostics_setting = var.container_group_diagnostics_setting
 }

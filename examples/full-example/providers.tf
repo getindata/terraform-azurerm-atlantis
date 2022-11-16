@@ -1,3 +1,0 @@
-provider "null" {
-  # Configuration options
-}
