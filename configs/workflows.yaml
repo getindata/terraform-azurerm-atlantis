@@ -1,9 +1,0 @@
-workflows:
-  terraform-basic:
-    plan:
-      steps:
-        - run: terraform init
-        - run: terraform plan -no-color -out $PLANFILE
-    apply:
-      steps:
-        - run: terraform apply -no-color -input=false -compact-warnings -auto-approve $PLANFILE

@@ -1,6 +1,19 @@
+module "atlantis_repo_config" {
+  source  = "getindata/atlantis-repo-config/null"
+  version = "1.1.0"
+
+  repos               = var.repo_config_repos
+  repos_common_config = var.repo_config_repos_common_config
+
+  workflows                = var.repo_config_workflows
+  use_predefined_workflows = var.repo_config_use_predefined_workflows
+
+  repo_config_file = var.repo_config_file
+}
+
 module "azure_container_group" {
   source  = "getindata/container-group/azurerm"
-  version = "1.0.0"
+  version = "1.1.0"
 
   context = module.this.context
 
@@ -19,9 +32,10 @@ module "azure_container_group" {
           port = var.port
         }
       ]
-      commands                     = ["atlantis", "server"]
-      environment_variables        = local.atlantis_environment_variables
-      secure_environment_variables = local.atlantis_secure_environment_variables
+      commands                                    = ["atlantis", "server"]
+      environment_variables                       = local.atlantis_environment_variables
+      secure_environment_variables                = local.atlantis_secure_environment_variables
+      secure_environment_variables_from_key_vault = var.secure_environment_variables_from_key_vault
     }
   }
 

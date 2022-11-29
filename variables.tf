@@ -36,22 +36,198 @@ variable "port" {
 variable "atlantis_server_config" {
   description = "Atlantis server config. If any option is not available here, it can be passed by `environment_variables` variable"
   type = object({
-    repo_config_json = optional(string)
-    repo_allowlist   = optional(string)
+    allow_draft_prs                 = optional(string)
+    allow_fork_prs                  = optional(string)
+    allow_repo_config               = optional(string)
+    atlantis_url                    = optional(string)
+    automerge                       = optional(string)
+    autoplan_file_list              = optional(string)
+    autoplan_modules                = optional(string)
+    autoplan_modules_from_projects  = optional(string)
+    azuredevops_hostname            = optional(string)
+    azuredevops_webhook_password    = optional(string)
+    azuredevops_webhook_user        = optional(string)
+    azuredevops_token               = optional(string)
+    azuredevops_user                = optional(string)
+    bitbucket_base_url              = optional(string)
+    bitbucket_token                 = optional(string)
+    bitbucket_user                  = optional(string)
+    bitbucket_webhook_secret        = optional(string)
+    checkout_strategy               = optional(string)
+    config                          = optional(string)
+    data_dir                        = optional(string)
+    default_tf_version              = optional(string)
+    disable_apply                   = optional(string)
+    disable_apply_all               = optional(string)
+    disable_autoplan                = optional(string)
+    disable_markdown_folding        = optional(string)
+    disable_repo_locking            = optional(string)
+    enable_policy_checks            = optional(string)
+    enable_regexp_cmd               = optional(string)
+    enable_diff_markdown_format     = optional(string)
+    gh_hostname                     = optional(string)
+    gh_token                        = optional(string)
+    gh_user                         = optional(string)
+    gh_webhook_secret               = optional(string)
+    gh_org                          = optional(string)
+    gh_app_id                       = optional(string)
+    gh_app_slug                     = optional(string)
+    gh_app_key_file                 = optional(string)
+    gh_app_key                      = optional(string)
+    gh_team_allowlist               = optional(string)
+    gh_allow_mergeable_bypass_apply = optional(string)
+    gitlab_hostname                 = optional(string)
+    gitlab_token                    = optional(string)
+    gitlab_user                     = optional(string)
+    gitlab_webhook_secret           = optional(string)
+    help                            = optional(string)
+    hide_prev_plan_comments         = optional(string)
+    locking_db_type                 = optional(string)
+    log_level                       = optional(string)
+    markdown_template_overrides_dir = optional(string)
+    parallel_pool_size              = optional(string)
+    port                            = optional(string)
+    quiet_policy_checks             = optional(string)
+    redis_host                      = optional(string)
+    redis_password                  = optional(string)
+    redis_port                      = optional(string)
+    redis_db                        = optional(string)
+    redis_tls_enabled               = optional(string)
+    redis_insecure_skip_verify      = optional(string)
+    repo_config                     = optional(string)
+    repo_config_json                = optional(string)
+    repo_whitelist                  = optional(string)
+    repo_allowlist                  = optional(string)
+    require_approval                = optional(string)
+    require_mergeable               = optional(string)
+    silence_fork_pr_errors          = optional(string)
+    silence_whitelist_errors        = optional(string)
+    silence_allowlist_errors        = optional(string)
+    silence_no_projects             = optional(string)
+    silence_vcs_status_no_plans     = optional(string)
+    skip_clone_no_changes           = optional(string)
+    slack_token                     = optional(string)
+    ssl_cert_file                   = optional(string)
+    ssl_key_file                    = optional(string)
+    stats_namespace                 = optional(string)
+    tf_download_url                 = optional(string)
+    tfe_hostname                    = optional(string)
+    tfe_local_execution_mode        = optional(string)
+    tfe_token                       = optional(string)
+    var_file_allowlist              = optional(string)
+    vcs_status_name                 = optional(string)
+    write_git_creds                 = optional(string)
+    web_basic_auth                  = optional(string)
+    web_username                    = optional(string)
+    web_password                    = optional(string)
+    websocket_check_origin          = optional(string)
   })
   default = {}
 }
 
-variable "atlantis_repo_config" {
-  description = "Atlantis repo config. If will be provided as `repo_config_json` if `repo_config_json` is not explicitly provided"
+###########################################
+## Atlantis Repos config                 ##
+###########################################
+
+variable "repo_config_repos" {
+  description = "Map of repositories and their configs. Refer to https://www.runatlantis.io/docs/server-side-repo-config.html#example-server-side-repo"
+  type = list(object({
+    id                            = optional(string, "/.*/")
+    branch                        = optional(string)
+    apply_requirements            = optional(list(string))
+    allowed_overrides             = optional(list(string))
+    allowed_workflows             = optional(list(string))
+    allow_custom_workflows        = optional(bool)
+    delete_source_branch_on_merge = optional(bool)
+    pre_workflow_hooks = optional(list(object({
+      run = string
+    })))
+    post_workflow_hooks = optional(list(object({
+      run = string
+    })))
+    workflow = optional(string)
+    ######### Helpers #########
+    allow_all_server_side_workflows = optional(bool, false)
+    terragrunt_atlantis_config = optional(object({
+      enabled              = optional(bool, false)
+      output               = optional(string, "atlantis.yaml")
+      automerge            = optional(bool)
+      autoplan             = optional(bool)
+      parallel             = optional(bool)
+      cascade_dependencies = optional(bool)
+      filter               = optional(string)
+      use_project_markers  = optional(bool)
+    }), {})
+  }))
+  default = []
+}
+
+variable "repo_config_repos_common_config" {
+  description = "Common config that will be merged into each item of the repos list"
   type = object({
-    repos = optional(list(object({
-      id                     = string
-      allowed_overrides      = optional(list(string), [])
-      allow_custom_workflows = optional(bool, false)
-    })), [])
+    id                            = optional(string)
+    branch                        = optional(string)
+    apply_requirements            = optional(list(string))
+    allowed_overrides             = optional(list(string))
+    allowed_workflows             = optional(list(string))
+    allow_custom_workflows        = optional(bool)
+    delete_source_branch_on_merge = optional(bool)
+    pre_workflow_hooks = optional(list(object({
+      run = string
+    })))
+    post_workflow_hooks = optional(list(object({
+      run = string
+    })))
+    workflow = optional(string)
+    ######### Helpers #########
+    allow_all_server_side_workflows = optional(bool, false)
+    terragrunt_atlantis_config = optional(object({
+      enabled  = optional(bool, false)
+      output   = optional(string, "atlantis.yaml")
+      autoplan = optional(bool, false)
+      parallel = optional(bool, false)
+      filter   = optional(string)
+    }), {})
   })
   default = {}
+}
+
+variable "repo_config_workflows" {
+  description = "List of custom workflow that will be added to the repo config file"
+  type = map(object({
+    plan = optional(object({
+      steps = any
+    }))
+    apply = optional(object({
+      steps = any
+    }))
+    policy_check = optional(object({
+      steps = any
+    }))
+  }))
+  default = {}
+}
+
+variable "repo_config_use_predefined_workflows" {
+  description = "Indicates wherever predefined workflows should be added to the generated repo config file"
+  type        = bool
+  default     = true
+}
+
+variable "repo_config_file" {
+  description = "Configures config file generation if enabled"
+  type = object({
+    enabled = optional(bool, false)
+    path    = optional(string, ".")
+    name    = optional(string, "repo_config.yaml")
+    format  = optional(string, "yaml")
+  })
+  default = {}
+
+  validation {
+    condition     = contains(["yaml", "json"], var.repo_config_file.format)
+    error_message = "Invalid format provided. Allowed values: yaml, json"
+  }
 }
 
 ###########################################
@@ -68,6 +244,15 @@ variable "secure_environment_variables" {
   description = "A list of sensitive environment variables to be set on the container"
   type        = map(string)
   default     = {}
+}
+
+variable "secure_environment_variables_from_key_vault" {
+  description = "A list of sensitive environment variables to be set on the container read from Azure Key Vault"
+  type = map(object({
+    key_vault_id = string
+    name         = string
+  }))
+  default = {}
 }
 
 variable "subnet_ids" {

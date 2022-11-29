@@ -31,7 +31,7 @@ module "this_atlantis" {
   attributes = [random_id.this.hex]
 
   atlantis_server_config = var.atlantis_server_config
-  atlantis_repo_config   = var.atlantis_repo_config
+  repo_config_repos      = var.repo_config_repos
 
   secure_environment_variables = var.secure_environment_variables
 

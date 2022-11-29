@@ -10,7 +10,7 @@ locals {
     local.atlantis_environment_variables_from_terraform_config,
     { ATLANTIS_REPO_CONFIG_JSON = coalesce(
       lookup(local.atlantis_environment_variables_from_terraform_config, "ATLANTIS_REPO_CONFIG_JSON", null),
-      jsonencode(var.atlantis_repo_config)
+      module.atlantis_repo_config.repos_config_json
     ) },
     var.environment_variables
   )
