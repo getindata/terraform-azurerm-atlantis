@@ -6,8 +6,6 @@ sections:
   hide: []
   show: [all]
 
-header-from: main.tf
-
 content: |-
   {{ .Header }}
 

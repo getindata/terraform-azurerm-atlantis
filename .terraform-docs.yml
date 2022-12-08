@@ -39,6 +39,9 @@ sort:
   enabled: true
   by: name
 
+recursive:
+  enabled: true
+
 settings:
   anchor: true
   color: true
