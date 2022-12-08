@@ -9,9 +9,11 @@ locals {
   location            = coalesce(one(data.azurerm_resource_group.this[*].location), var.location)
   resource_group_name = coalesce(one(data.azurerm_resource_group.this[*].name), var.resource_group_name)
 
-  dns_name_label = (length(var.subnet_ids) == 0
-    ? (var.dns_name_label != null ? var.dns_name_label : local.name_from_descriptor)
-  : null)
+  dns_name_label = (length(var.subnet_ids) == 0 ? (
+    var.dns_name_label != null ?
+    var.dns_name_label : local.name_from_descriptor
+  ) : null)
+
   hostname = coalesce(var.hostname, format(
     "%s.%s.azurecontainer.io",
     local.dns_name_label,

@@ -10,7 +10,7 @@ variable "location" {
 }
 
 variable "atlantis_container" {
-  description = "List of containers that will be running in the container group"
+  description = "Atlantis container configuration"
   type = object({
     image  = optional(string, "ghcr.io/runatlantis/atlantis")
     cpu    = optional(number, 1)
