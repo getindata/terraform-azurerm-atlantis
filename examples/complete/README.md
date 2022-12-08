@@ -48,9 +48,13 @@ module "this_atlantis" {
 2. Populate it with:
    ```terraform
    secure_environment_variables = {
-     ATLANTIS_GITLAB_TOKEN          = "glpat-jWEhwGYABjHQY-Z7D3up"
-     ATLANTIS_GITLAB_USER           = "jakubigla-getindata"
-     ATLANTIS_GITLAB_WEBHOOK_SECRET = "1234"
+     ATLANTIS_GITLAB_TOKEN          = ""
+     ATLANTIS_GITLAB_USER           = ""
+     ATLANTIS_GITLAB_WEBHOOK_SECRET = ""
+
+     ATLANTIS_WEB_BASIC_AUTH = true
+     ATLANTIS_WEB_USERNAME = ""
+     ATLANTIS_WEB_PASSWORD = ""
    }
    ```
 3. Run the commands from below:

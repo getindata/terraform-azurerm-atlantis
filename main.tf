@@ -2,18 +2,18 @@ module "atlantis_repo_config" {
   source  = "getindata/atlantis-repo-config/null"
   version = "1.1.0"
 
-  repos               = var.repo_config_repos
-  repos_common_config = var.repo_config_repos_common_config
+  repos               = var.atlantis_repo_config_repos
+  repos_common_config = var.atlantis_repo_config_repos_common_config
 
-  workflows                = var.repo_config_workflows
-  use_predefined_workflows = var.repo_config_use_predefined_workflows
+  workflows                = var.atlantis_repo_config_workflows
+  use_predefined_workflows = var.atlantis_repo_config_use_predefined_workflows
 
-  repo_config_file = var.repo_config_file
+  repo_config_file = var.atlantis_repo_config_file
 }
 
 module "azure_container_group" {
   source  = "getindata/container-group/azurerm"
-  version = "1.1.0"
+  version = "1.3.0"
 
   context = module.this.context
 
@@ -22,26 +22,17 @@ module "azure_container_group" {
 
   name = coalesce(var.name, "atlantis")
 
-  containers = {
-    atlantis = {
-      image  = var.image
-      cpu    = var.cpu
-      memory = var.memory
-      ports = [
-        {
-          port = var.port
-        }
-      ]
-      commands                                    = ["atlantis", "server"]
-      environment_variables                       = local.atlantis_environment_variables
-      secure_environment_variables                = local.atlantis_secure_environment_variables
-      secure_environment_variables_from_key_vault = var.secure_environment_variables_from_key_vault
-    }
-  }
+  containers = merge({
+    atlantis = merge(var.atlantis_container, {
+      environment_variables = local.atlantis_environment_variables
+    })
+  }, var.containers)
 
   subnet_ids                          = var.subnet_ids
   dns_name_label                      = var.dns_name_label
   dns_name_servers                    = var.dns_name_servers
+  exposed_ports                       = var.exposed_ports
+  restart_policy                      = var.restart_policy
   identity                            = var.identity
   image_registry_credential           = var.image_registry_credential
   container_diagnostics_log_analytics = var.container_diagnostics_log_analytics

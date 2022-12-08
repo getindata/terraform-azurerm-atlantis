@@ -9,8 +9,58 @@ variable "location" {
   default     = null
 }
 
+variable "hostname" {
+  description = "Hostname for accessing Atlantis. Used in Caddy for automatic HTTPS. If not provided - default Azure Container hostname will be used"
+  type        = string
+  default     = null
+}
+
+variable "caddy_container" {
+  description = "Caddy container configuration"
+  type = object({
+    image  = optional(string, "caddy")
+    cpu    = optional(number, 0.5)
+    memory = optional(number, 0.5)
+    ports = optional(list(object({
+      port     = number
+      protocol = optional(string, "TCP")
+      })), [
+      {
+        port     = 443
+        protocol = "TCP"
+      },
+      {
+        port     = 80
+        protocol = "TCP"
+      }
+    ])
+    commands                     = optional(list(string))
+    environment_variables        = optional(map(string), {})
+    secure_environment_variables = optional(map(string), {})
+    secure_environment_variables_from_key_vault = optional(map(object({
+      key_vault_id = string
+      name         = string
+    })), {})
+    volumes = optional(map(object({
+      mount_path = string
+      read_only  = optional(bool, false)
+      empty_dir  = optional(bool)
+      git_repo = optional(object({
+        url       = string
+        directory = optional(string)
+        revision  = optional(string)
+      }))
+      secret               = optional(map(string))
+      storage_account_name = optional(string)
+      storage_account_key  = optional(string)
+      share_name           = optional(string)
+    })), {})
+  })
+  default = {}
+}
+
 variable "atlantis_container" {
-  description = "List of containers that will be running in the container group"
+  description = "Atlantis container configuration"
   type = object({
     image  = optional(string, "ghcr.io/runatlantis/atlantis")
     cpu    = optional(number, 1)
@@ -289,7 +339,10 @@ variable "exposed_ports" {
     port     = number
     protocol = optional(string, "TCP")
   }))
-  default = []
+  default = [
+    { port = 80 },
+    { port = 443 },
+  ]
 }
 
 variable "subnet_ids" {

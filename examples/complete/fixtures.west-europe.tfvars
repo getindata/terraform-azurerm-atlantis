@@ -8,7 +8,7 @@ descriptor_formats = {
     labels = ["name"]
     format = "%v-rg"
   }
-  container-group = {
+  azure-container-group = {
     labels = ["namespace", "environment", "stage", "name", "attributes"]
     format = "%v-%v-%v-%v-%v-aci"
   }
@@ -22,7 +22,7 @@ atlantis_server_config = {
   repo_allowlist = "gitlab.com/getindata/*"
 }
 
-repo_config_repos = [
+atlantis_repo_config_repos = [
   {
     id                     = "/.*/"
     allowed_overrides      = ["workflow", "apply_requirements", "delete_source_branch_on_merge"]
