@@ -1,7 +1,18 @@
 locals {
-  # Get a name from the descriptor. If not available, use default naming convention.
-  # Trim and replace function are used to avoid bare delimiters on both ends of the name and situation of adjacent delimiters.
-  name_from_descriptor = trim(replace(
-    lookup(module.this.descriptors, "module-resource-name", module.this.id), "/${module.this.delimiter}${module.this.delimiter}+/", ""
-  ), module.this.delimiter)
+  atlantis_environment_variables_from_terraform_config = { for k in keys(var.atlantis_server_config) :
+  "ATLANTIS_${upper(replace(k, "-", "_"))}" => var.atlantis_server_config[k] }
+  atlantis_environment_variables_msi = merge(
+    var.identity != null ? { ARM_USE_MSI = "true" } : {},
+    try(length(var.identity.system_assigned_identity_role_assignments), 0) > 0 ? { ARM_CLIENT_ID = one(var.identity.system_assigned_identity_role_assignments) } : {},
+  )
+  atlantis_environment_variables = merge(
+    local.atlantis_environment_variables_msi,
+    local.atlantis_environment_variables_from_terraform_config,
+    { ATLANTIS_REPO_CONFIG_JSON = coalesce(
+      lookup(local.atlantis_environment_variables_from_terraform_config, "ATLANTIS_REPO_CONFIG_JSON", null),
+      module.atlantis_repo_config.repos_config_json
+    ) },
+    var.environment_variables
+  )
+  atlantis_secure_environment_variables = merge(var.secure_environment_variables)
 }
