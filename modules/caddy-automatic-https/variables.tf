@@ -15,6 +15,16 @@ variable "hostname" {
   default     = null
 }
 
+variable "caddy_persistence_storage_account" {
+  description = "Persistence storage for Caddy so that the certificates are not lost between deployments"
+  type = object({
+    name       = string
+    key        = string
+    share_name = string
+  })
+  default = null
+}
+
 variable "caddy_container" {
   description = "Caddy container configuration"
   type = object({

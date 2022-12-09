@@ -4,6 +4,22 @@ data "azurerm_resource_group" "this" {
   name = var.resource_group_name
 }
 
+module "caddy_persistence_storage_account" {
+  source  = "getindata/storage-account/azurerm"
+  version = "1.3.0"
+  context = module.this.context
+
+  enabled = var.caddy_persistence_storage_account == null
+
+  attributes          = ["caddy"]
+  resource_group_name = local.resource_group_name
+
+  file_shares = [{
+    name  = "caddy"
+    quota = 1
+  }]
+}
+
 module "this_atlantis" {
   source  = "../../"
   context = module.this.context
