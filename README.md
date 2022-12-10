@@ -106,10 +106,12 @@ module "atlantis" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_atlantis_url"></a> [atlantis\_url](#output\_atlantis\_url) | Url for the Atlantis UI |
-| <a name="output_atlantis_webhook_url"></a> [atlantis\_webhook\_url](#output\_atlantis\_webhook\_url) | Url of the Atlantis webhook used by git platforms like GitLab or GitHub |
+| <a name="output_container_group_fqdn"></a> [container\_group\_fqdn](#output\_container\_group\_fqdn) | The FQDN of the container group derived from `dns_name_label` |
 | <a name="output_container_group_id"></a> [container\_group\_id](#output\_container\_group\_id) | ID of the container group |
+| <a name="output_container_group_ip_address"></a> [container\_group\_ip\_address](#output\_container\_group\_ip\_address) | The IP address allocated to the container group |
 | <a name="output_container_group_name"></a> [container\_group\_name](#output\_container\_group\_name) | Name of the container group |
+| <a name="output_container_group_resource_group_name"></a> [container\_group\_resource\_group\_name](#output\_container\_group\_resource\_group\_name) | Name of the container group resource group |
+| <a name="output_container_group_system_assigned_identity_principal_id"></a> [container\_group\_system\_assigned\_identity\_principal\_id](#output\_container\_group\_system\_assigned\_identity\_principal\_id) | ID of the system assigned principal |
 
 ## Providers
 

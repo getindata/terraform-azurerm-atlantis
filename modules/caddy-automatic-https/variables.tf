@@ -15,6 +15,26 @@ variable "hostname" {
   default     = null
 }
 
+variable "caddyfile" {
+  description = "Caddyfile. Either base64 encoded content or template file. If nothing provided a simple Caddyfile will be provided"
+  type = object({
+    base64_encoded = optional(string)
+    template = optional(object({
+      path       = string
+      parameters = optional(any)
+    }))
+  })
+  default = {}
+
+  validation {
+    condition = length([
+      for v in [var.caddyfile.base64_encoded, var.caddyfile.template] : v
+      if v != null
+    ]) < 2
+    error_message = "One of \"base64_encoded\" or \"template\" options must be specified or none of them"
+  }
+}
+
 variable "caddy_persistence_storage_account" {
   description = "Persistence storage for Caddy so that the certificates are not lost between deployments"
   type = object({
@@ -44,7 +64,7 @@ variable "caddy_container" {
         protocol = "TCP"
       }
     ])
-    commands                     = optional(list(string))
+    commands                     = optional(list(string), ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"])
     environment_variables        = optional(map(string), {})
     secure_environment_variables = optional(map(string), {})
     secure_environment_variables_from_key_vault = optional(map(object({

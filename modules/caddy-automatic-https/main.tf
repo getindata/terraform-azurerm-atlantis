@@ -27,9 +27,6 @@ module "this_atlantis" {
   resource_group_name = local.resource_group_name
   location            = local.location
 
-  containers    = merge(var.containers, { caddy = local.caddy_container })
-  exposed_ports = var.exposed_ports
-
   #Atlantis specific variables
   atlantis_container                            = var.atlantis_container
   atlantis_server_config                        = var.atlantis_server_config
@@ -40,11 +37,11 @@ module "this_atlantis" {
   atlantis_repo_config_file                     = var.atlantis_repo_config_file
 
   #Container groups variables
-
-  subnet_ids       = var.subnet_ids
-  dns_name_label   = var.dns_name_label
-  dns_name_servers = var.dns_name_servers
-
+  containers                          = merge({ caddy = local.caddy_container }, var.containers)
+  subnet_ids                          = var.subnet_ids
+  dns_name_label                      = var.dns_name_label
+  dns_name_servers                    = var.dns_name_servers
+  exposed_ports                       = var.exposed_ports
   restart_policy                      = var.restart_policy
   identity                            = var.identity
   image_registry_credential           = var.image_registry_credential

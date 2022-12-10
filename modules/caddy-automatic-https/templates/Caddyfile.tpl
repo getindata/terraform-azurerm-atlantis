@@ -1,3 +1,3 @@
-${hostname}:443 {
-    reverse_proxy localhost:4141
-}
+${hostname}
+
+reverse_proxy localhost:4141

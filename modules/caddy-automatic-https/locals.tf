@@ -32,23 +32,30 @@ locals {
     share_name = var.caddy_persistence_storage_account == null ? "caddy" : var.caddy_persistence_storage_account.name
   }
 
+  caddyfile_base64_encoded = coalesce(
+    var.caddyfile.base64_encoded,
+    base64encode(templatefile(
+      coalesce(try(var.caddyfile.template.path, null), "${path.module}/templates/Caddyfile.tpl"),
+      merge({
+        hostname = local.hostname
+      }, try(var.caddyfile.template.parameters, null))
+    ))
+  )
+
   caddy_container = merge(var.caddy_container, {
-    commands = ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
-    volumes = {
+    volumes = merge({
       caddy-data = {
-        mount_path           = "/etc/caddy"
+        mount_path           = "/data/caddy"
         storage_account_name = local.caddy_persistence_storage_account.name
         storage_account_key  = local.caddy_persistence_storage_account.key
         share_name           = local.caddy_persistence_storage_account.share_name
       }
-      caddy-file = {
+      caddy-config = {
         mount_path = "/etc/caddy"
         secret = {
-          "Caddyfile" = base64encode(templatefile("${path.module}/templates/Caddyfile.tpl", {
-            hostname = local.hostname
-          }))
+          "Caddyfile" = local.caddyfile_base64_encoded
         }
       }
-    }
+    }, var.caddy_container.volumes)
   })
 }
