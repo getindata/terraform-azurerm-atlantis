@@ -32,8 +32,14 @@ module "this_atlantis" {
   diagnostic_settings = var.diagnostic_settings
 
   #Atlantis specific variables
-  atlantis_container                            = var.atlantis_container
-  atlantis_server_config                        = var.atlantis_server_config
+  atlantis_container = merge(
+    var.atlantis_container, {
+      environment_variables = merge({
+        ATLANTIS_ATLANTIS_URL = format("https://%s", local.hostname)
+      }, var.atlantis_container.environment_variables)
+    }
+  )
+
   atlantis_repo_config_repos                    = var.atlantis_repo_config_repos
   atlantis_repo_config_repos_common_config      = var.atlantis_repo_config_repos_common_config
   atlantis_repo_config_workflows                = var.atlantis_repo_config_workflows
