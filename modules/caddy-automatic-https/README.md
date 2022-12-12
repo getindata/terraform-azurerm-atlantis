@@ -1,37 +1,22 @@
-# Atlantis in Azure Container Group Terraform Module
-![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
-![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)
+# Atlantis with Caddy in Azure Container Group Terraform Module
 
-<!--- Replace repository name -->
-![License](https://badgen.net/github/license/getindata/terraform-azurerm-atlantis/)
-![Release](https://badgen.net/github/release/getindata/terraform-azurerm-atlantis/)
-
-<p align="center">
-  <img height="150" src="https://getindata.com/img/logo.svg">
-  <h3 align="center">We help companies turn their data into assets</h3>
-</p>
+This submodule allows configuring Atlantis in Azure Container Group with Caddy as a side car container.  
 
 ---
-
-Terraform Module for deploying [Atlantis](https://www.runatlantis.io/) in Azure Container Group instance.
-
-This module takes advantage of [terraform-null-atlantis-repo-config](https://github.com/getindata/terraform-null-atlantis-repo-config/),
-which supplies a set of predefined custom workflows that are ready to use. 
-
-There is also available a [caddy-automatic-https](./modules/caddy-automatic-https) submodule, 
-which adds automatic HTTPS integration via [Caddy](https://caddyserver.com/v2).   
 
 ## USAGE
 
 ```terraform
-module "atlantis" {
-  source = "github.com/getindata/terraform-azurerm-atlantis"
+module "atlantis_with_caddy" {
+  source = "github.com/getindata/terraform-azurerm-atlantis//modules/caddy-automatic-https"
 
   resource_group_name = "example-rg"
   
   atlantis_server_config = {
     repo_allowlist = "github.com/getindata/*"
   }
+
+  dns_name_label = "my-atlantis-1234"
 
   repo_config_repos = [
     {
@@ -42,10 +27,6 @@ module "atlantis" {
   ]
 }
 ```
-
-## EXAMPLES
-
-- [Complete example](examples/complete) - a complete example with Automatic HTTPS via Caddy, basic auth enabled and more
 
 <!-- BEGIN_TF_DOCS -->
 
@@ -65,6 +46,9 @@ module "atlantis" {
 | <a name="input_atlantis_repo_config_workflows"></a> [atlantis\_repo\_config\_workflows](#input\_atlantis\_repo\_config\_workflows) | List of custom workflow that will be added to the repo config file | <pre>map(object({<br>    plan = optional(object({<br>      steps = any<br>    }))<br>    apply = optional(object({<br>      steps = any<br>    }))<br>    policy_check = optional(object({<br>      steps = any<br>    }))<br>  }))</pre> | `{}` | no |
 | <a name="input_atlantis_server_config"></a> [atlantis\_server\_config](#input\_atlantis\_server\_config) | Atlantis server config. If any option is not available here, it can be passed by `environment_variables` variable | <pre>object({<br>    allow_draft_prs                 = optional(string)<br>    allow_fork_prs                  = optional(string)<br>    allow_repo_config               = optional(string)<br>    atlantis_url                    = optional(string)<br>    automerge                       = optional(string)<br>    autoplan_file_list              = optional(string)<br>    autoplan_modules                = optional(string)<br>    autoplan_modules_from_projects  = optional(string)<br>    azuredevops_hostname            = optional(string)<br>    azuredevops_webhook_password    = optional(string)<br>    azuredevops_webhook_user        = optional(string)<br>    azuredevops_token               = optional(string)<br>    azuredevops_user                = optional(string)<br>    bitbucket_base_url              = optional(string)<br>    bitbucket_token                 = optional(string)<br>    bitbucket_user                  = optional(string)<br>    bitbucket_webhook_secret        = optional(string)<br>    checkout_strategy               = optional(string)<br>    config                          = optional(string)<br>    data_dir                        = optional(string)<br>    default_tf_version              = optional(string)<br>    disable_apply                   = optional(string)<br>    disable_apply_all               = optional(string)<br>    disable_autoplan                = optional(string)<br>    disable_markdown_folding        = optional(string)<br>    disable_repo_locking            = optional(string)<br>    enable_policy_checks            = optional(string)<br>    enable_regexp_cmd               = optional(string)<br>    enable_diff_markdown_format     = optional(string)<br>    gh_hostname                     = optional(string)<br>    gh_token                        = optional(string)<br>    gh_user                         = optional(string)<br>    gh_webhook_secret               = optional(string)<br>    gh_org                          = optional(string)<br>    gh_app_id                       = optional(string)<br>    gh_app_slug                     = optional(string)<br>    gh_app_key_file                 = optional(string)<br>    gh_app_key                      = optional(string)<br>    gh_team_allowlist               = optional(string)<br>    gh_allow_mergeable_bypass_apply = optional(string)<br>    gitlab_hostname                 = optional(string)<br>    gitlab_token                    = optional(string)<br>    gitlab_user                     = optional(string)<br>    gitlab_webhook_secret           = optional(string)<br>    help                            = optional(string)<br>    hide_prev_plan_comments         = optional(string)<br>    locking_db_type                 = optional(string)<br>    log_level                       = optional(string)<br>    markdown_template_overrides_dir = optional(string)<br>    parallel_pool_size              = optional(string)<br>    port                            = optional(string)<br>    quiet_policy_checks             = optional(string)<br>    redis_host                      = optional(string)<br>    redis_password                  = optional(string)<br>    redis_port                      = optional(string)<br>    redis_db                        = optional(string)<br>    redis_tls_enabled               = optional(string)<br>    redis_insecure_skip_verify      = optional(string)<br>    repo_config                     = optional(string)<br>    repo_config_json                = optional(string)<br>    repo_whitelist                  = optional(string)<br>    repo_allowlist                  = optional(string)<br>    require_approval                = optional(string)<br>    require_mergeable               = optional(string)<br>    silence_fork_pr_errors          = optional(string)<br>    silence_whitelist_errors        = optional(string)<br>    silence_allowlist_errors        = optional(string)<br>    silence_no_projects             = optional(string)<br>    silence_vcs_status_no_plans     = optional(string)<br>    skip_clone_no_changes           = optional(string)<br>    slack_token                     = optional(string)<br>    ssl_cert_file                   = optional(string)<br>    ssl_key_file                    = optional(string)<br>    stats_namespace                 = optional(string)<br>    tf_download_url                 = optional(string)<br>    tfe_hostname                    = optional(string)<br>    tfe_local_execution_mode        = optional(string)<br>    tfe_token                       = optional(string)<br>    var_file_allowlist              = optional(string)<br>    vcs_status_name                 = optional(string)<br>    write_git_creds                 = optional(string)<br>    web_basic_auth                  = optional(bool)<br>    web_username                    = optional(string)<br>    web_password                    = optional(string)<br>    websocket_check_origin          = optional(string)<br>  })</pre> | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
+| <a name="input_caddy_container"></a> [caddy\_container](#input\_caddy\_container) | Caddy container configuration | <pre>object({<br>    image  = optional(string, "caddy")<br>    cpu    = optional(number, 0.5)<br>    memory = optional(number, 0.5)<br>    ports = optional(list(object({<br>      port     = number<br>      protocol = optional(string, "TCP")<br>      })), [<br>      {<br>        port     = 443<br>        protocol = "TCP"<br>      },<br>      {<br>        port     = 80<br>        protocol = "TCP"<br>      }<br>    ])<br>    commands                     = optional(list(string), ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"])<br>    environment_variables        = optional(map(string), {})<br>    secure_environment_variables = optional(map(string), {})<br>    secure_environment_variables_from_key_vault = optional(map(object({<br>      key_vault_id = string<br>      name         = string<br>    })), {})<br>    volumes = optional(map(object({<br>      mount_path = string<br>      read_only  = optional(bool, false)<br>      empty_dir  = optional(bool)<br>      git_repo = optional(object({<br>        url       = string<br>        directory = optional(string)<br>        revision  = optional(string)<br>      }))<br>      secret               = optional(map(string))<br>      storage_account_name = optional(string)<br>      storage_account_key  = optional(string)<br>      share_name           = optional(string)<br>    })), {})<br>  })</pre> | `{}` | no |
+| <a name="input_caddy_persistence_storage_account"></a> [caddy\_persistence\_storage\_account](#input\_caddy\_persistence\_storage\_account) | Persistence storage for Caddy so that the certificates are not lost between deployments | <pre>object({<br>    name       = string<br>    key        = string<br>    share_name = string<br>  })</pre> | `null` | no |
+| <a name="input_caddyfile"></a> [caddyfile](#input\_caddyfile) | Caddyfile. Either base64 encoded content or template file. If nothing provided a simple Caddyfile will be provided | <pre>object({<br>    base64_encoded = optional(string)<br>    template = optional(object({<br>      path       = string<br>      parameters = optional(any)<br>    }))<br>  })</pre> | `{}` | no |
 | <a name="input_container_diagnostics_log_analytics"></a> [container\_diagnostics\_log\_analytics](#input\_container\_diagnostics\_log\_analytics) | Log Analytics workspace to be used with container logs | <pre>object({<br>    workspace_id  = string<br>    workspace_key = string<br>    log_type      = optional(string, "ContainerInsights")<br>  })</pre> | `null` | no |
 | <a name="input_containers"></a> [containers](#input\_containers) | List of containers that will be running in the container group | <pre>map(object({<br>    image  = string<br>    cpu    = number<br>    memory = number<br>    ports = optional(list(object({<br>      port     = number<br>      protocol = optional(string, "TCP")<br>    })), [])<br>    commands                     = optional(list(string), [])<br>    environment_variables        = optional(map(string), {})<br>    secure_environment_variables = optional(map(string), {})<br>    secure_environment_variables_from_key_vault = optional(map(object({<br>      key_vault_id = string<br>      name         = string<br>    })), {})<br>    volumes = optional(map(object({<br>      mount_path = string<br>      read_only  = optional(bool, false)<br>      empty_dir  = optional(bool)<br>      git_repo = optional(object({<br>        url       = string<br>        directory = optional(string)<br>        revision  = optional(string)<br>      }))<br>      secret               = optional(map(string))<br>      storage_account_name = optional(string)<br>      storage_account_key  = optional(string)<br>      share_name           = optional(string)<br>    })), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "descriptor_formats": {},<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "labels_as_tags": [<br>    "unset"<br>  ],<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {},<br>  "tenant": null<br>}</pre> | no |
@@ -76,7 +60,8 @@ module "atlantis" {
 | <a name="input_dns_name_servers"></a> [dns\_name\_servers](#input\_dns\_name\_servers) | DNS name servers configured with containers | `list(string)` | `[]` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false to prevent the module from creating any resources | `bool` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT' | `string` | `null` | no |
-| <a name="input_exposed_ports"></a> [exposed\_ports](#input\_exposed\_ports) | It can only contain ports that are also exposed on one or more containers in the group | <pre>list(object({<br>    port     = number<br>    protocol = optional(string, "TCP")<br>  }))</pre> | `[]` | no |
+| <a name="input_exposed_ports"></a> [exposed\_ports](#input\_exposed\_ports) | It can only contain ports that are also exposed on one or more containers in the group | <pre>list(object({<br>    port     = number<br>    protocol = optional(string, "TCP")<br>  }))</pre> | <pre>[<br>  {<br>    "port": 80<br>  },<br>  {<br>    "port": 443<br>  }<br>]</pre> | no |
+| <a name="input_hostname"></a> [hostname](#input\_hostname) | Hostname for accessing Atlantis. Used in Caddy for automatic HTTPS. If not provided - default Azure Container hostname will be used | `string` | `null` | no |
 | <a name="input_id_length_limit"></a> [id\_length\_limit](#input\_id\_length\_limit) | Limit `id` to this many characters (minimum 6).<br>Set to `0` for unlimited length.<br>Set to `null` for keep the existing setting, which defaults to `0`.<br>Does not affect `id_full`. | `number` | `null` | no |
 | <a name="input_identity"></a> [identity](#input\_identity) | Managed identity block. For type possible values are: SystemAssigned and UserAssigned | <pre>object({<br>    type         = optional(string, "SystemAssigned")<br>    identity_ids = optional(list(string), [])<br>    system_assigned_identity_role_assignments = optional(list(object({<br>      scope                = string<br>      role_definition_name = string<br>    })), [])<br>  })</pre> | `null` | no |
 | <a name="input_image_registry_credential"></a> [image\_registry\_credential](#input\_image\_registry\_credential) | Credentials for ACR, so the images can be pulled by the container instance | <pre>list(object({<br>    username = string<br>    password = string<br>    server   = string<br>  }))</pre> | `[]` | no |
@@ -99,9 +84,9 @@ module "atlantis" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_atlantis_repo_config"></a> [atlantis\_repo\_config](#module\_atlantis\_repo\_config) | getindata/atlantis-repo-config/null | 1.1.0 |
-| <a name="module_azure_container_group"></a> [azure\_container\_group](#module\_azure\_container\_group) | getindata/container-group/azurerm | 2.0.0 |
+| <a name="module_caddy_persistence_storage_account"></a> [caddy\_persistence\_storage\_account](#module\_caddy\_persistence\_storage\_account) | getindata/storage-account/azurerm | 1.3.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
+| <a name="module_this_atlantis"></a> [this\_atlantis](#module\_this\_atlantis) | ../../ | n/a |
 
 ## Outputs
 
@@ -116,34 +101,20 @@ module "atlantis" {
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.0 |
 
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.0 |
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 <!-- END_TF_DOCS -->
-
-## CONTRIBUTING
-
-Contributions are very welcomed!
-
-Start by reviewing [contribution guide](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md). After that, start coding and ship your changes by creating a new PR.
-
-## LICENSE
-
-Apache 2 Licensed. See [LICENSE](LICENSE) for full details.
-
-## AUTHORS
-
-<!--- Replace repository name -->
-<a href="https://github.com/getindata/REPO_NAME/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=getindata/terraform-azurerm-atlantis" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).

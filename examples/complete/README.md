@@ -51,6 +51,10 @@ module "this_atlantis" {
      ATLANTIS_GITLAB_TOKEN          = ""
      ATLANTIS_GITLAB_USER           = ""
      ATLANTIS_GITLAB_WEBHOOK_SECRET = ""
+
+     ATLANTIS_WEB_BASIC_AUTH = true
+     ATLANTIS_WEB_USERNAME = ""
+     ATLANTIS_WEB_PASSWORD = ""
    }
    ```
 3. Run the commands from below:

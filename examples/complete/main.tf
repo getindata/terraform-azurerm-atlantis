@@ -21,19 +21,24 @@ module "resource_group" {
 }
 
 module "this_atlantis" {
-  source = "../../"
+  source = "../../modules/caddy-automatic-https"
 
   context = module.this.context
+
+  name = "atlantis"
 
   resource_group_name = module.resource_group.name
   location            = module.resource_group.location
 
   attributes = [random_id.this.hex]
 
-  atlantis_server_config = var.atlantis_server_config
-  repo_config_repos      = var.repo_config_repos
+  atlantis_server_config     = var.atlantis_server_config
+  atlantis_repo_config_repos = var.atlantis_repo_config_repos
 
-  secure_environment_variables = var.secure_environment_variables
+  atlantis_container = {
+    secure_environment_variables = var.atlantis_secure_environment_variables
+  }
 
-  identity = {}
+  dns_name_label = format("atlantis-%s", random_id.this.hex)
+  identity       = {}
 }

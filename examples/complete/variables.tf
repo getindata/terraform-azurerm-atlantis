@@ -17,7 +17,7 @@ variable "atlantis_server_config" {
   default = {}
 }
 
-variable "repo_config_repos" {
+variable "atlantis_repo_config_repos" {
   description = "Map of repositories and their configs. Refer to https://www.runatlantis.io/docs/server-side-repo-config.html#example-server-side-repo"
   type = list(object({
     id                            = optional(string, "/.*/")
@@ -50,7 +50,7 @@ variable "repo_config_repos" {
   default = []
 }
 
-variable "secure_environment_variables" {
+variable "atlantis_secure_environment_variables" {
   description = "A list of sensitive environment variables to be set on the container"
   type        = map(string)
   default     = {}

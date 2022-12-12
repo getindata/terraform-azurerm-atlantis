@@ -12,7 +12,6 @@ locals {
       lookup(local.atlantis_environment_variables_from_terraform_config, "ATLANTIS_REPO_CONFIG_JSON", null),
       module.atlantis_repo_config.repos_config_json
     ) },
-    var.environment_variables
+    var.atlantis_container.environment_variables
   )
-  atlantis_secure_environment_variables = merge(var.secure_environment_variables)
 }
