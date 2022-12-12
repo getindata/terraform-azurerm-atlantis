@@ -3,7 +3,7 @@ locals {
   "ATLANTIS_${upper(replace(k, "-", "_"))}" => var.atlantis_server_config[k] }
   atlantis_environment_variables_msi = merge(
     var.identity != null ? { ARM_USE_MSI = "true" } : {},
-    try(length(var.identity.system_assigned_identity_role_assignments), 0) > 0 ? { ARM_CLIENT_ID = one(var.identity.system_assigned_identity_role_assignments) } : {},
+    try(length(var.identity.identity_ids), 0) > 0 ? { ARM_CLIENT_ID = one(var.identity.identity_ids) } : {},
   )
   atlantis_environment_variables = merge(
     local.atlantis_environment_variables_msi,
