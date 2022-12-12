@@ -20,6 +20,11 @@ locals {
     local.location
   ))
 
+  atlantis_environment_variables = merge(
+    { ATLANTIS_ATLANTIS_URL = format("https://%s", local.hostname) },
+    var.atlantis_container.environment_variables
+  )
+
   atlantis_port = try(var.atlantis_container.ports[0].port, 4141)
 
   caddy_persistence_storage_account = {
