@@ -36,6 +36,7 @@ module "this_atlantis" {
     environment_variables = local.atlantis_environment_variables
   })
 
+  atlantis_server_config                        = var.atlantis_server_config
   atlantis_repo_config_repos                    = var.atlantis_repo_config_repos
   atlantis_repo_config_repos_common_config      = var.atlantis_repo_config_repos_common_config
   atlantis_repo_config_workflows                = var.atlantis_repo_config_workflows
