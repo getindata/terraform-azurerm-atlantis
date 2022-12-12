@@ -40,5 +40,7 @@ module "this_atlantis" {
   }
 
   dns_name_label = format("atlantis-%s", random_id.this.hex)
-  identity       = {}
+  identity = {
+    enabled = true
+  }
 }

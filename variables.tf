@@ -339,14 +339,18 @@ variable "restart_policy" {
 variable "identity" {
   description = "Managed identity block. For type possible values are: SystemAssigned and UserAssigned"
   type = object({
+    enabled      = optional(bool, false)
     type         = optional(string, "SystemAssigned")
     identity_ids = optional(list(string), [])
-    system_assigned_identity_role_assignments = optional(list(object({
+    user_assigned_identity = optional(object({
+      enabled         = optional(bool, false)
+      descriptor_name = optional(string, "azure-managed-service-identity")
+    }), {})
+    role_assignments = optional(list(object({
       scope                = string
       role_definition_name = string
     })), [])
   })
-  default = null
 }
 
 variable "image_registry_credential" {
