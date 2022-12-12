@@ -2,7 +2,7 @@ locals {
   # Get a name from the descriptor. If not available, use default naming convention.
   # Trim and replace function are used to avoid bare delimiters on both ends of the name and situation of adjacent delimiters.
   name_from_descriptor = trim(replace(
-    lookup(module.this.descriptors, "azure-container-group", module.this.id),
+    lookup(module.this.descriptors, var.descriptor_name, module.this.id),
     "/${module.this.delimiter}${module.this.delimiter}+/",
   module.this.delimiter), module.this.delimiter)
 
@@ -19,6 +19,8 @@ locals {
     local.dns_name_label,
     local.location
   ))
+
+  atlantis_port = try(var.atlantis_container.ports[0].port, 4141)
 
   caddy_persistence_storage_account = {
     name = (var.caddy_persistence_storage_account == null
@@ -37,7 +39,8 @@ locals {
     base64encode(templatefile(
       coalesce(try(var.caddyfile.template.path, null), "${path.module}/templates/Caddyfile.tpl"),
       merge({
-        hostname = local.hostname
+        hostname      = local.hostname
+        atlantis_port = local.atlantis_port
       }, try(var.caddyfile.template.parameters, null))
     ))
   )

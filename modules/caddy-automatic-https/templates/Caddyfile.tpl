@@ -1,3 +1,3 @@
 ${hostname}
 
-reverse_proxy localhost:4141
+reverse_proxy localhost:${atlantis_port}

@@ -9,8 +9,23 @@ variable "location" {
   default     = null
 }
 
+variable "descriptor_name" {
+  description = "Name of the descriptor used to form a resource name"
+  type        = string
+  default     = "azure-container-group"
+}
+
+variable "diagnostic_settings" {
+  description = "Enables diagnostics settings for a resource and streams the logs and metrics to any provided sinks"
+  type = object({
+    enabled               = optional(bool, false)
+    logs_destinations_ids = optional(list(string), [])
+  })
+  default = {}
+}
+
 variable "atlantis_container" {
-  description = "Atlantis container configuration"
+  description = "Atlantis container configuration. First item of the ports list must refer to the Atlantis"
   type = object({
     image  = optional(string, "ghcr.io/runatlantis/atlantis")
     cpu    = optional(number, 1)
@@ -350,14 +365,6 @@ variable "container_diagnostics_log_analytics" {
     workspace_id  = string
     workspace_key = string
     log_type      = optional(string, "ContainerInsights")
-  })
-  default = null
-}
-
-variable "container_group_diagnostics_setting" {
-  description = "Azure Monitor diagnostics for container group resource"
-  type = object({
-    workspace_resource_id = optional(string)
   })
   default = null
 }

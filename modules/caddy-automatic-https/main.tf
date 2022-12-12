@@ -27,6 +27,10 @@ module "this_atlantis" {
   resource_group_name = local.resource_group_name
   location            = local.location
 
+  descriptor_name = var.descriptor_name
+
+  diagnostic_settings = var.diagnostic_settings
+
   #Atlantis specific variables
   atlantis_container                            = var.atlantis_container
   atlantis_server_config                        = var.atlantis_server_config
@@ -46,5 +50,4 @@ module "this_atlantis" {
   identity                            = var.identity
   image_registry_credential           = var.image_registry_credential
   container_diagnostics_log_analytics = var.container_diagnostics_log_analytics
-  container_group_diagnostics_setting = var.container_group_diagnostics_setting
 }

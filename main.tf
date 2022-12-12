@@ -13,14 +13,17 @@ module "atlantis_repo_config" {
 
 module "azure_container_group" {
   source  = "getindata/container-group/azurerm"
-  version = "1.3.0"
+  version = "2.0.0"
 
   context = module.this.context
 
   resource_group_name = var.resource_group_name
   location            = var.location
 
-  name = coalesce(var.name, "atlantis")
+  name            = coalesce(var.name, "atlantis")
+  descriptor_name = var.descriptor_name
+
+  diagnostic_settings = var.diagnostic_settings
 
   containers = merge({
     atlantis = merge(var.atlantis_container, {
@@ -36,5 +39,4 @@ module "azure_container_group" {
   identity                            = var.identity
   image_registry_credential           = var.image_registry_credential
   container_diagnostics_log_analytics = var.container_diagnostics_log_analytics
-  container_group_diagnostics_setting = var.container_group_diagnostics_setting
 }
