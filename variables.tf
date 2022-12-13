@@ -351,6 +351,7 @@ variable "identity" {
       role_definition_name = string
     })), [])
   })
+  default = {}
 }
 
 variable "image_registry_credential" {
