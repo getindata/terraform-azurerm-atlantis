@@ -1,6 +1,6 @@
 module "atlantis_repo_config" {
   source  = "getindata/atlantis-repo-config/null"
-  version = "1.1.0"
+  version = "1.2.0"
 
   repos               = var.atlantis_repo_config_repos
   repos_common_config = var.atlantis_repo_config_repos_common_config
@@ -12,10 +12,8 @@ module "atlantis_repo_config" {
 }
 
 module "azure_container_group" {
-  #  source  = "getindata/container-group/azurerm"
-  #  version = "2.0.0"
-
-  source = "github.com/getindata/terraform-azurerm-container-group?ref=ffd40ddf9a89184139833663f6f47e687e146300"
+  source  = "getindata/container-group/azurerm"
+  version = "3.0.0"
 
   context = module.this.context
 
