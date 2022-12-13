@@ -13,9 +13,14 @@ output "container_group_resource_group_name" {
   value       = module.this_atlantis.container_group_resource_group_name
 }
 
-output "container_group_system_assigned_identity_principal_id" {
-  description = "ID of the system assigned principal"
-  value       = module.this_atlantis.container_group_system_assigned_identity_principal_id
+output "container_group_identity_principal_id" {
+  description = "ID of the assigned principal"
+  value       = module.this_atlantis.container_group_identity_principal_id
+}
+
+output "container_group_user_assigned_identity_id" {
+  description = "ID of the user assigned identity"
+  value       = module.this_atlantis.container_group_user_assigned_identity_id
 }
 
 output "container_group_fqdn" {

@@ -32,7 +32,10 @@ module "this_atlantis" {
   diagnostic_settings = var.diagnostic_settings
 
   #Atlantis specific variables
-  atlantis_container                            = var.atlantis_container
+  atlantis_container = merge(var.atlantis_container, {
+    environment_variables = local.atlantis_environment_variables
+  })
+
   atlantis_server_config                        = var.atlantis_server_config
   atlantis_repo_config_repos                    = var.atlantis_repo_config_repos
   atlantis_repo_config_repos_common_config      = var.atlantis_repo_config_repos_common_config

@@ -1,6 +1,6 @@
 module "atlantis_repo_config" {
   source  = "getindata/atlantis-repo-config/null"
-  version = "1.1.0"
+  version = "1.2.0"
 
   repos               = var.atlantis_repo_config_repos
   repos_common_config = var.atlantis_repo_config_repos_common_config
@@ -13,7 +13,7 @@ module "atlantis_repo_config" {
 
 module "azure_container_group" {
   source  = "getindata/container-group/azurerm"
-  version = "2.0.0"
+  version = "3.0.0"
 
   context = module.this.context
 
