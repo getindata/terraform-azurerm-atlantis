@@ -369,7 +369,11 @@ variable "containers" {
         directory = optional(string)
         revision  = optional(string)
       }))
-      secret               = optional(map(string))
+      secret = optional(map(string))
+      secret_from_key_vault = optional(map(object({
+        key_vault_id = string
+        name         = string
+      })), {})
       storage_account_name = optional(string)
       storage_account_key  = optional(string)
       share_name           = optional(string)

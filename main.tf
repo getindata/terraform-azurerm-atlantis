@@ -13,7 +13,7 @@ module "atlantis_repo_config" {
 
 module "azure_container_group" {
   source  = "getindata/container-group/azurerm"
-  version = "3.0.0"
+  version = "3.1.0"
 
   context = module.this.context
 
