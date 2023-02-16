@@ -99,7 +99,7 @@ module "atlantis" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_atlantis_repo_config"></a> [atlantis\_repo\_config](#module\_atlantis\_repo\_config) | getindata/atlantis-repo-config/null | 1.2.2 |
+| <a name="module_atlantis_repo_config"></a> [atlantis\_repo\_config](#module\_atlantis\_repo\_config) | getindata/atlantis-repo-config/null | 1.3.0 |
 | <a name="module_azure_container_group"></a> [azure\_container\_group](#module\_azure\_container\_group) | getindata/container-group/azurerm | 3.1.1 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 
