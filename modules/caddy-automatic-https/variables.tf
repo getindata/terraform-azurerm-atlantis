@@ -313,22 +313,78 @@ variable "atlantis_repo_config_workflows" {
   description = "List of custom workflow that will be added to the repo config file"
   type = map(object({
     plan = optional(object({
-      steps = any
+      steps = optional(list(object({
+        env = optional(object({
+          name    = string
+          command = string
+        }))
+        run      = optional(string)
+        multienv = optional(string)
+        atlantis_step = optional(object({
+          command    = string
+          extra_args = optional(list(string))
+        }))
+      })))
     }))
     apply = optional(object({
-      steps = any
+      steps = optional(list(object({
+        env = optional(object({
+          name    = string
+          command = string
+        }))
+        run      = optional(string)
+        multienv = optional(string)
+        atlantis_step = optional(object({
+          command    = string
+          extra_args = optional(list(string))
+        }))
+      })))
     }))
-    policy_check = optional(object({
-      steps = any
+    import = optional(object({
+      steps = optional(list(object({
+        env = optional(object({
+          name    = string
+          command = string
+        }))
+        run      = optional(string)
+        multienv = optional(string)
+        atlantis_step = optional(object({
+          command    = string
+          extra_args = optional(list(string))
+        }))
+      })))
     }))
+    state_rm = optional(object({
+      steps = optional(list(object({
+        env = optional(object({
+          name    = string
+          command = string
+        }))
+        run      = optional(string)
+        multienv = optional(string)
+        atlantis_step = optional(object({
+          command    = string
+          extra_args = optional(list(string))
+        }))
+      })))
+    }))
+    template = optional(string, "terragrunt-basic")
+    asdf = optional(object({
+      enabled = optional(bool, false)
+    }), {})
+    checkov = optional(object({
+      enabled   = optional(bool, false)
+      soft_fail = optional(bool, false)
+      file      = optional(string, "$SHOWFILE")
+    }), {})
+    pull_gitlab_variables = optional(object({
+      enabled = optional(bool, false)
+    }), {})
+    check_gitlab_approvals = optional(object({
+      enabled = optional(bool, false)
+    }), {}),
   }))
   default = {}
-}
-
-variable "atlantis_repo_config_use_predefined_workflows" {
-  description = "Indicates wherever predefined workflows should be added to the generated repo config file"
-  type        = bool
-  default     = true
 }
 
 variable "atlantis_repo_config_file" {

@@ -36,12 +36,11 @@ module "this_atlantis" {
     environment_variables = local.atlantis_environment_variables
   })
 
-  atlantis_server_config                        = var.atlantis_server_config
-  atlantis_repo_config_repos                    = var.atlantis_repo_config_repos
-  atlantis_repo_config_repos_common_config      = var.atlantis_repo_config_repos_common_config
-  atlantis_repo_config_workflows                = var.atlantis_repo_config_workflows
-  atlantis_repo_config_use_predefined_workflows = var.atlantis_repo_config_use_predefined_workflows
-  atlantis_repo_config_file                     = var.atlantis_repo_config_file
+  atlantis_server_config                   = var.atlantis_server_config
+  atlantis_repo_config_repos               = var.atlantis_repo_config_repos
+  atlantis_repo_config_repos_common_config = var.atlantis_repo_config_repos_common_config
+  atlantis_repo_config_workflows           = var.atlantis_repo_config_workflows
+  atlantis_repo_config_file                = var.atlantis_repo_config_file
 
   #Container groups variables
   containers                          = merge({ caddy = local.caddy_container }, var.containers)

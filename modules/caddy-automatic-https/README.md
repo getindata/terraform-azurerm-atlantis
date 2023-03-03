@@ -1,6 +1,6 @@
 # Atlantis with Caddy in Azure Container Group Terraform Module
 
-This submodule allows configuring Atlantis in Azure Container Group with Caddy as a side car container.  
+This submodule allows configuring Atlantis in Azure Container Group with Caddy as a sidecar container.  
 
 ---
 
