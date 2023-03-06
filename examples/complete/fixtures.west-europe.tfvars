@@ -29,3 +29,11 @@ atlantis_repo_config_repos = [
     allow_custom_workflows = true
   }
 ]
+
+atlantis_repo_config_workflows = {
+  terragrunt-basic-with-features = {
+    checkov                = { enabled = true, soft_fail = true }
+    check_gitlab_approvals = { enabled = true }
+    asdf                   = { enabled = true }
+  }
+}

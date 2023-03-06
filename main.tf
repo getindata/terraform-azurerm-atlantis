@@ -1,12 +1,11 @@
 module "atlantis_repo_config" {
   source  = "getindata/atlantis-repo-config/null"
-  version = "1.3.1"
+  version = "2.0.0"
 
   repos               = var.atlantis_repo_config_repos
   repos_common_config = var.atlantis_repo_config_repos_common_config
 
-  workflows                = var.atlantis_repo_config_workflows
-  use_predefined_workflows = var.atlantis_repo_config_use_predefined_workflows
+  workflows = var.atlantis_repo_config_workflows
 
   repo_config_file = var.atlantis_repo_config_file
 }
