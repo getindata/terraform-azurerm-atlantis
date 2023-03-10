@@ -305,6 +305,9 @@ variable "atlantis_repo_config_repos_common_config" {
       parallel = optional(bool, false)
       filter   = optional(string)
     }), {})
+    infracost = optional(object({
+      enabled = optional(bool, false)
+    }), {})
   })
   default = {}
 }
@@ -376,6 +379,9 @@ variable "atlantis_repo_config_workflows" {
       enabled   = optional(bool, false)
       soft_fail = optional(bool, false)
       file      = optional(string, "$SHOWFILE")
+    }), {})
+    infracost = optional(object({
+      enabled = optional(bool, false)
     }), {})
     pull_gitlab_variables = optional(object({
       enabled = optional(bool, false)
