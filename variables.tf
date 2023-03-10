@@ -33,7 +33,7 @@ variable "atlantis_container" {
     ports = optional(list(object({
       port     = number
       protocol = optional(string, "TCP")
-    })), [{
+      })), [{
       port     = 4141
       protocol = "TCP"
     }])
