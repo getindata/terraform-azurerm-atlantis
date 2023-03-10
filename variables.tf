@@ -24,6 +24,90 @@ variable "diagnostic_settings" {
   default = {}
 }
 
+variable "hostname" {
+  description = "Hostname for accessing Atlantis. Used in Caddy for automatic HTTPS. If not provided - default Azure Container hostname will be used"
+  type        = string
+  default     = null
+}
+
+variable "caddyfile" {
+  description = "Caddyfile. Either base64 encoded content or template file. If nothing provided a simple Caddyfile will be provided"
+  type = object({
+    base64_encoded = optional(string)
+    template = optional(object({
+      path       = string
+      parameters = optional(any)
+    }))
+  })
+  default = {}
+
+  validation {
+    condition = length([
+    for v in [var.caddyfile.base64_encoded, var.caddyfile.template] : v
+    if v != null
+    ]) < 2
+    error_message = "One of \"base64_encoded\" or \"template\" options must be specified or none of them"
+  }
+}
+
+variable "caddy_persistence_storage_account" {
+  description = "Persistence storage for Caddy so that the certificates are not lost between deployments"
+  type = object({
+    name       = string
+    key        = string
+    share_name = string
+  })
+  default = null
+}
+
+variable "caddy_container" {
+  description = "Caddy container configuration"
+  type = object({
+    image  = optional(string, "caddy")
+    cpu    = optional(number, 0.5)
+    memory = optional(number, 0.5)
+    ports = optional(list(object({
+      port     = number
+      protocol = optional(string, "TCP")
+    })), [
+      {
+        port     = 443
+        protocol = "TCP"
+      },
+      {
+        port     = 80
+        protocol = "TCP"
+      }
+    ])
+    commands                     = optional(list(string), ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"])
+    environment_variables        = optional(map(string), {})
+    secure_environment_variables = optional(map(string), {})
+    secure_environment_variables_from_key_vault = optional(map(object({
+      key_vault_id = string
+      name         = string
+    })), {})
+    volumes = optional(map(object({
+      mount_path = string
+      read_only  = optional(bool, false)
+      empty_dir  = optional(bool)
+      git_repo = optional(object({
+        url       = string
+        directory = optional(string)
+        revision  = optional(string)
+      }))
+      secret = optional(map(string))
+      secret_from_key_vault = optional(map(object({
+        key_vault_id = string
+        name         = string
+      })), {})
+      storage_account_name = optional(string)
+      storage_account_key  = optional(string)
+      share_name           = optional(string)
+    })), {})
+  })
+  default = {}
+}
+
 variable "atlantis_container" {
   description = "Atlantis container configuration. First item of the ports list must refer to the Atlantis"
   type = object({
@@ -33,7 +117,7 @@ variable "atlantis_container" {
     ports = optional(list(object({
       port     = number
       protocol = optional(string, "TCP")
-      })), [{
+    })), [{
       port     = 4141
       protocol = "TCP"
     }])
@@ -221,6 +305,9 @@ variable "atlantis_repo_config_repos_common_config" {
       parallel = optional(bool, false)
       filter   = optional(string)
     }), {})
+    infracost = optional(object({
+      enabled = optional(bool, false)
+    }), {})
   })
   default = {}
 }
@@ -292,6 +379,9 @@ variable "atlantis_repo_config_workflows" {
       enabled   = optional(bool, false)
       soft_fail = optional(bool, false)
       file      = optional(string, "$SHOWFILE")
+    }), {})
+    infracost = optional(object({
+      enabled = optional(bool, false)
     }), {})
     pull_gitlab_variables = optional(object({
       enabled = optional(bool, false)
@@ -368,7 +458,10 @@ variable "exposed_ports" {
     port     = number
     protocol = optional(string, "TCP")
   }))
-  default = []
+  default = [
+    { port = 80 },
+    { port = 443 },
+  ]
 }
 
 variable "subnet_ids" {
