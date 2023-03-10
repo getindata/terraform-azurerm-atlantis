@@ -43,8 +43,8 @@ variable "caddyfile" {
 
   validation {
     condition = length([
-    for v in [var.caddyfile.base64_encoded, var.caddyfile.template] : v
-    if v != null
+      for v in [var.caddyfile.base64_encoded, var.caddyfile.template] : v
+      if v != null
     ]) < 2
     error_message = "One of \"base64_encoded\" or \"template\" options must be specified or none of them"
   }
@@ -69,7 +69,7 @@ variable "caddy_container" {
     ports = optional(list(object({
       port     = number
       protocol = optional(string, "TCP")
-    })), [
+      })), [
       {
         port     = 443
         protocol = "TCP"
@@ -117,7 +117,7 @@ variable "atlantis_container" {
     ports = optional(list(object({
       port     = number
       protocol = optional(string, "TCP")
-    })), [{
+      })), [{
       port     = 4141
       protocol = "TCP"
     }])
