@@ -266,15 +266,15 @@ variable "atlantis_repo_config_repos" {
     ######### Helpers #########
     allow_all_server_side_workflows = optional(bool, false)
     terragrunt_atlantis_config = optional(object({
-      enabled              = optional(bool, false)
-      output               = optional(string, "atlantis.yaml")
+      enabled              = optional(bool)
+      output               = optional(string)
       automerge            = optional(bool)
       autoplan             = optional(bool)
       parallel             = optional(bool)
       cascade_dependencies = optional(bool)
       filter               = optional(string)
       use_project_markers  = optional(bool)
-    }), {})
+    }))
   }))
   default = []
 }
@@ -299,12 +299,15 @@ variable "atlantis_repo_config_repos_common_config" {
     ######### Helpers #########
     allow_all_server_side_workflows = optional(bool, false)
     terragrunt_atlantis_config = optional(object({
-      enabled  = optional(bool, false)
-      output   = optional(string, "atlantis.yaml")
-      autoplan = optional(bool, false)
-      parallel = optional(bool, false)
-      filter   = optional(string)
-    }), {})
+      enabled              = optional(bool)
+      output               = optional(string)
+      automerge            = optional(bool)
+      autoplan             = optional(bool)
+      parallel             = optional(bool)
+      cascade_dependencies = optional(bool)
+      filter               = optional(string)
+      use_project_markers  = optional(bool)
+    }))
     infracost = optional(object({
       enabled = optional(bool, false)
     }), {})
