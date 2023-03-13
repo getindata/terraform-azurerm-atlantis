@@ -1,6 +1,6 @@
 module "atlantis_repo_config" {
   source  = "getindata/atlantis-repo-config/null"
-  version = "2.1.0"
+  version = "2.1.1"
 
   repos               = var.atlantis_repo_config_repos
   repos_common_config = var.atlantis_repo_config_repos_common_config
