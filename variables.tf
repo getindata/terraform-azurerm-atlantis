@@ -303,7 +303,10 @@ variable "atlantis_repo_config_workflows" {
       enabled = optional(bool, false)
     }), {}),
     infracost = optional(object({
-      enabled = optional(bool, false)
+      enabled                    = optional(bool, false)
+      platform                   = optional(string)
+      token_environment_variable = optional(string)
+      behavior                   = optional(string)
     }), {}),
   }))
   default = {}
