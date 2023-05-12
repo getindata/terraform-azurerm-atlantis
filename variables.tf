@@ -304,9 +304,9 @@ variable "atlantis_repo_config_workflows" {
     }), {}),
     infracost = optional(object({
       enabled                    = optional(bool, false)
-      platform                   = optional(string)
+      platform                   = optional(string, "gitlab")
       token_environment_variable = optional(string)
-      behavior                   = optional(string)
+      behavior                   = optional(string, "new")
     }), {}),
   }))
   default = {}
