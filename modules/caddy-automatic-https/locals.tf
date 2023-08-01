@@ -36,7 +36,7 @@ locals {
       ? module.caddy_persistence_storage_account.storage_primary_access_key
       : var.caddy_persistence_storage_account.key
     )
-    share_name = var.caddy_persistence_storage_account == null ? "caddy" : var.caddy_persistence_storage_account.name
+    share_name = var.caddy_persistence_storage_account == null ? "caddy" : var.caddy_persistence_storage_account.share_name
   }
 
   caddyfile_base64_encoded = coalesce(
