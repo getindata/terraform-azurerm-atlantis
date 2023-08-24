@@ -8,6 +8,7 @@ on:
 
 env:
   TERRAFORM_DOCS_VERSION: v0.16.0
+  TFLINT_VERSION: v0.46.0
 
 jobs:
   collectInputs:
@@ -79,3 +80,4 @@ jobs:
         with:
           terraform-version: ${{ steps.minMax.outputs.maxVersion }}
           terraform-docs-version: ${{ env.TERRAFORM_DOCS_VERSION }}
+          tflint-version: ${{ env.TFLINT_VERSION }}
