@@ -32,3 +32,8 @@ output "container_group_ip_address" {
   description = "The IP address allocated to the container group"
   value       = module.azure_container_group.ip_address
 }
+
+output "container_group_ip_address2" {
+  description = "The IP address allocated to the container group"
+  value       = module.azure_container_group.ip_address
+}
