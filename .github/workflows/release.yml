@@ -1,7 +1,7 @@
 name: Create new release with changelog
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
 
 jobs:
