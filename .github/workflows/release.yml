@@ -14,8 +14,8 @@ jobs:
 
       - name: Check release label
         id: release-label
-        uses: actions-ecosystem/action-release-label@v1
-        if: ${{ github.event.pull_request_target.merged == true }}
+        uses: getindata/action-release-label@v1.3.0
+        if: ${{ github.event.pull_request.merged == true }}
 
       - name: Get latest tag
         id: get-latest-tag
@@ -36,7 +36,7 @@ jobs:
         if: ${{ steps.release-label.outputs.level != null }}
         with:
           tag: ${{ steps.bump-semver.outputs.new_version }}
-          message: "${{ steps.bump-semver.outputs.new_version }}: PR #${{ github.event.pull_request_target.number }} ${{ github.event.pull_request_target.title }}"
+          message: "${{ steps.bump-semver.outputs.new_version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
 
       - name: Generate new release with changelog
         id: release-with-changelog
@@ -62,6 +62,6 @@ jobs:
         if: ${{ steps.bump-semver.outputs.new_version != null }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.get-merged-pull-request.outputs.number }}
+          number: ${{ github.event.pull_request.number }}
           body: |
             The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
