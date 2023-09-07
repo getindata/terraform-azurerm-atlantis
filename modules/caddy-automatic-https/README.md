@@ -83,7 +83,7 @@ module "atlantis_with_caddy" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_caddy_persistence_storage_account"></a> [caddy\_persistence\_storage\_account](#module\_caddy\_persistence\_storage\_account) | getindata/storage-account/azurerm | 1.3.0 |
+| <a name="module_caddy_persistence_storage_account"></a> [caddy\_persistence\_storage\_account](#module\_caddy\_persistence\_storage\_account) | getindata/storage-account/azurerm | 1.7.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 | <a name="module_this_atlantis"></a> [this\_atlantis](#module\_this\_atlantis) | ../../ | n/a |
 
