@@ -8,7 +8,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 100
 
@@ -19,7 +19,7 @@ jobs:
 
       - name: Get latest tag
         id: get-latest-tag
-        uses: actions-ecosystem/action-get-latest-tag@v1
+        uses: actions-ecosystem/action-get-latest-tag@v1.6.0
         if: ${{ steps.release-label.outputs.level != null }}
 
       - name: Bump semantic version
