@@ -6,7 +6,7 @@ data "azurerm_resource_group" "this" {
 
 module "caddy_persistence_storage_account" {
   source  = "getindata/storage-account/azurerm"
-  version = "1.7.0"
+  version = "1.7.1"
   context = module.this.context
 
   enabled = var.caddy_persistence_storage_account == null
